@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { AppShell, Burger, Group, Box, Stack } from "@mantine/core";
+import { AppShell, Burger, Group, Box, Stack, Image, Center } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import AddNote from "../notes/addNote";
 import { BsPeople } from "react-icons/bs";
@@ -54,13 +54,17 @@ export function Layout({ children }) {
               visibleFrom="sm"
               size="sm"
             />
+            <Center px="md">
+
+            <Image src={"logo.png"} w={"80px"} h={"100%"} />
+            </Center>
           </Group>
           <Group>
             {isClient && (
               <>
                 {router.pathname === "/people" && <AddPerson />}
                 {router.pathname === "/notes" && <AddNote />}
-                {user?.name  && <UserMenu />}
+                {user?.name && <UserMenu mobileOpened={mobileOpened} />}
               </>
             )}
           </Group>

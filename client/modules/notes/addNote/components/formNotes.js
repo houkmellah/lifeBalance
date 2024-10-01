@@ -60,11 +60,17 @@ const FormNotes = ({ note }) => {
 
   const updateNoteMutation = useMutation({
     mutationFn: (values) =>
-      axios.put(`http://localhost:8000/api/notes/${note._id}`, values, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }),
+      axios.put(
+        `http://localhost:8000/api/notes/${note._id}`,
+        { ...values, token }, 
+        {
+          params: { token }, 
+          headers: {
+            Authorization: `Bearer ${token}`, 
+            "Content-Type": "application/json",
+          },
+        }
+      ),
     onSuccess: () => {
       queryClient.invalidateQueries(["ListNotes"]);
       // Ne pas fermer le modal, peut-être afficher un message de succès à la place

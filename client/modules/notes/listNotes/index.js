@@ -236,9 +236,13 @@ let people
                 {currentNotes.map((note) => (
                   <Table.Tr key={note._id}>
                     <Table.Td>{note.note}</Table.Td>
-                    <Table.Td>
+                    <Table.Td visibleFrom="md">
                       {format(new Date(note.date), "eeee dd MMM")}
                     </Table.Td>
+                    <Table.Td hiddenFrom="md">
+                      {format(new Date(note.date), "dd/MM")}
+                    </Table.Td>
+                  
                     <Table.Td>
                       {note.rating > 0 && <GetFullIcon value={note.rating} />}
                     </Table.Td>

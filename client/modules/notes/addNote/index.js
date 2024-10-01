@@ -1,4 +1,4 @@
-import { Button, Modal } from "@mantine/core";
+import { Button, Modal, Text } from "@mantine/core";
 import React from "react";
 import { useDisclosure } from "@mantine/hooks";
 import FormNotes from "./components/formNotes";
@@ -11,13 +11,13 @@ const AddNote = () => {
       <Modal opened={opened} onClose={close} title="Add Note" size={"lg"}>
         <FormNotes close={close} />
       </Modal>
-      <Button 
-        onClick={open} 
+      <Button
+        onClick={open}
         leftSection={<MdFormatListBulletedAdd size={30} />}
         variant="filled"
         color="blue"
       >
-        Add Note
+        <Text visibleFrom="md"> {"Add Note"}</Text>
       </Button>
     </>
   );

@@ -13,12 +13,18 @@ import {
 } from "@mantine/core";
 import { IconX, IconCheck, IconAlertTriangle } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
+import useAuthStore from "../../auth/store";
 
 const DeletePerson = ({ id, onDeleteSuccess, setNotification, refetch }) => {
+  const {token} = useAuthStore()
   const [opened, { open, close }] = useDisclosure(false);
 
   const deletePerson = async (id) => {
-    await axios.delete(`http://localhost:8000/api/people/${id}`);
+    await axios.delete(`http://localhost:8000/api/people/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   };
 
   const deletePersonMutation = useMutation({
