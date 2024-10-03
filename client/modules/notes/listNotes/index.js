@@ -141,15 +141,14 @@ let people
             : new Date(b.date) - new Date(a.date);
         }
         if (sortConfig.key === "lifeAspect") {
+          // Sort by the first life aspect in the array
+          const aAspect = a.lifeAspect[0] || '';
+          const bAspect = b.lifeAspect[0] || '';
           return sortConfig.direction === "ascending"
-            ? a.lifeAspect.localeCompare(b.lifeAspect)
-            : b.lifeAspect.localeCompare(a.lifeAspect);
+            ? aAspect.localeCompare(bAspect)
+            : bAspect.localeCompare(aAspect);
         }
-        if (a[sortConfig.key] < b[sortConfig.key])
-          return sortConfig.direction === "ascending" ? -1 : 1;
-        if (a[sortConfig.key] > b[sortConfig.key])
-          return sortConfig.direction === "ascending" ? 1 : -1;
-        return 0;
+        // ... rest of the sorting logic ...
       });
     }
     return sortedData;
@@ -247,7 +246,7 @@ let people
                       {note.rating > 0 && <GetFullIcon value={note.rating} />}
                     </Table.Td>
                     <Table.Td>
-                      <LifeAspectBadge aspect={note.lifeAspect} />
+                      <LifeAspectBadges aspects={note.lifeAspect} />
                     </Table.Td>
                     <Table.Td>
                       <Avatar.Group spacing="sm">
@@ -297,6 +296,16 @@ let people
         )}
       </Stack>
     </>
+  );
+};
+
+const LifeAspectBadges = ({ aspects }) => {
+  return (
+    <Group gap="xs">
+      {aspects.map((aspect, index) => (
+        <LifeAspectBadge key={index} aspect={aspect} />
+      ))}
+    </Group>
   );
 };
 

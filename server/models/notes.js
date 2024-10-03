@@ -15,7 +15,7 @@ const noteSchema = new Schema({
     required: true,
   },
   lifeAspect: {
-    type: String,
+    type: [String],
     required: true
   },
   people: {
@@ -23,7 +23,8 @@ const noteSchema = new Schema({
     required: false
   },
   user: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: 'User',
     required: true
   }
 }, {

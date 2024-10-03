@@ -4,6 +4,6 @@
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
   "/auth": "pages/auth.js",
-  "/people": "pages/people.js",
-  "/notes": "pages/notes.js"
+  "/notes": "pages/notes.js",
+  "/people": "pages/people.js"
 }

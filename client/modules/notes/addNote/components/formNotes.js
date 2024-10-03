@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "@mantine/form";
-import { Center, Stack, Button, Textarea, Select } from "@mantine/core";
+import { Center, Stack, Button, Textarea, Select, MultiSelect } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -31,7 +31,7 @@ const FormNotes = ({ note }) => {
       note: note?.note ?? "",
       date: dateValue,
       rating: note?.rating ?? 0,
-      lifeAspect: note?.lifeAspect ?? null,
+      lifeAspect: note?.lifeAspect ?? [],
       people: note?.people ?? [],
     },
   });
@@ -95,9 +95,9 @@ const FormNotes = ({ note }) => {
           <Textarea label="Note" {...form.getInputProps("note")} />
           <DateInput label="Date" {...form.getInputProps("date")} />
 
-          <Select
-            label="Life Aspect"
-            placeholder="Select life aspect"
+          <MultiSelect
+            label="Life Aspects"
+            placeholder="Select life aspects"
             data={lifeAspects}
             {...form.getInputProps("lifeAspect")}
           />
