@@ -1,4 +1,7 @@
-
 **/.env
 
 **/node_modules/
+
+# Exclure le dossier next
+**/next/
+
