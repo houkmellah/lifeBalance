@@ -1,1 +1,0 @@
-self.__REACT_LOADABLE_MANIFEST="{\"..\\\\modules\\\\layout\\\\index.js -> ../auth/userMenu\":{\"id\":\"..\\\\modules\\\\layout\\\\index.js -> ../auth/userMenu\",\"files\":[\"static/chunks/modules_auth_userMenu_index_js.js\"]}}"
