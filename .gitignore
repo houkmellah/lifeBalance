@@ -5,3 +5,4 @@
 # Exclure le dossier next
 **/next/
 
+**/.next/
