@@ -18,8 +18,13 @@ const noteSchema = new Schema({
     type: [String],
     required: true
   },
+  
   people: {
     type: Array,
+    required: false
+  },
+  tags: {
+    type: [String],
     required: false
   },
   user: {

@@ -68,7 +68,7 @@ const LifeAspectBadge = ({ aspect }) => {
       color={aspectInfo.color}
       leftSection={<Icon size={19} />}
       fz={12}
-      size="lg"
+      size="sm"
     >
       {aspectInfo.value}
     </Badge>
@@ -86,9 +86,9 @@ const ListNotes = () => {
     key: "date",
     direction: "descending",
   });
-let people
+  let people;
 
-  const { people: peopleFromStore , setPeople } = usePeopleStore();
+  const { people: peopleFromStore, setPeople } = usePeopleStore();
   const {
     data: peopleFromQuery = [],
     isError: isPeopleError,
@@ -100,7 +100,7 @@ let people
     onSuccess: (data) => setPeople(data),
   });
 
-  people = peopleFromStore && peopleFromQuery
+  people = peopleFromStore && peopleFromQuery;
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const notesPerPage = 10;
@@ -142,8 +142,8 @@ let people
         }
         if (sortConfig.key === "lifeAspect") {
           // Sort by the first life aspect in the array
-          const aAspect = a.lifeAspect[0] || '';
-          const bAspect = b.lifeAspect[0] || '';
+          const aAspect = a.lifeAspect[0] || "";
+          const bAspect = b.lifeAspect[0] || "";
           return sortConfig.direction === "ascending"
             ? aAspect.localeCompare(bAspect)
             : bAspect.localeCompare(aAspect);
@@ -234,14 +234,25 @@ let people
               <Table.Tbody>
                 {currentNotes.map((note) => (
                   <Table.Tr key={note._id}>
-                    <Table.Td>{note.note}</Table.Td>
+                    <Table.Td>
+                      <Stack>
+                        {note.note}
+                        <Group>
+                          {note.tags.map((tag) => (
+                            <Badge key={tag._id} variant="filled" variant="outline" color="gray" >
+                              {tag}
+                            </Badge>
+                          ))}
+                        </Group>
+                        </Stack>
+                    </Table.Td>
                     <Table.Td visibleFrom="md">
                       {format(new Date(note.date), "eeee dd MMM")}
                     </Table.Td>
                     <Table.Td hiddenFrom="md">
                       {format(new Date(note.date), "dd/MM")}
                     </Table.Td>
-                  
+
                     <Table.Td>
                       {note.rating > 0 && <GetFullIcon value={note.rating} />}
                     </Table.Td>
@@ -301,11 +312,11 @@ let people
 
 const LifeAspectBadges = ({ aspects }) => {
   return (
-    <Group gap="xs">
+    <Stack gap="xs">
       {aspects.map((aspect, index) => (
         <LifeAspectBadge key={index} aspect={aspect} />
       ))}
-    </Group>
+    </Stack>
   );
 };
 

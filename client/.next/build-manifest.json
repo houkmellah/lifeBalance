@@ -36,6 +36,11 @@
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/notes.js"
+    ],
+    "/people": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/people.js"
     ]
   },
   "ampFirstPages": []

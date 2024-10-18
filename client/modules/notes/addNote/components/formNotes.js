@@ -1,12 +1,20 @@
 import React from "react";
 import { useForm } from "@mantine/form";
-import { Center, Stack, Button, Textarea, Select, MultiSelect } from "@mantine/core";
+import {
+  Center,
+  Stack,
+  Button,
+  Textarea,
+  MultiSelect,
+  TagsInput,
+} from "@mantine/core";
 import { DateInput } from "@mantine/dates";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import EmojiRating from "./emojiRating";
 import ListPeople from "../../../people/addPerson/listPeople";
 import useAuthStore from "../../../auth/store";
+import { Debugger } from "../../../debugger";
 
 const FormNotes = ({ note }) => {
   const queryClient = useQueryClient();
@@ -33,6 +41,7 @@ const FormNotes = ({ note }) => {
       rating: note?.rating ?? 0,
       lifeAspect: note?.lifeAspect ?? [],
       people: note?.people ?? [],
+      tags: note?.tags ?? [],
     },
   });
 
@@ -62,11 +71,11 @@ const FormNotes = ({ note }) => {
     mutationFn: (values) =>
       axios.put(
         `http://localhost:8000/api/notes/${note._id}`,
-        { ...values, token }, 
+        { ...values, token },
         {
-          params: { token }, 
+          params: { token },
           headers: {
-            Authorization: `Bearer ${token}`, 
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
@@ -88,11 +97,48 @@ const FormNotes = ({ note }) => {
     }
   };
 
+  // Requête pour récupérer les tags de l'utilisateur
+  const { data: tags, refetch: refetchTags } = useQuery({
+    queryKey: ["tags"],
+    queryFn: () =>
+      axios
+        .get("http://localhost:8000/api/tags", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => res.data),
+  });
+
+  const createTagMutation = useMutation({
+    mutationFn: (newTag) =>
+      axios.post(
+        "http://localhost:8000/api/tags",
+        { name: newTag, color: "#000000" }, // Vous pouvez ajuster la couleur par défaut
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      ),
+    onSuccess: () => {
+      refetchTags();
+    },
+  });
+  const handleCreateTag = (query) => {
+    createTagMutation.mutate(query, {
+      onSuccess: (data) => {
+        const newTag = data.data;
+        form.setFieldValue("tags", [...form.values.tags, newTag._id]);
+      },
+    });
+    return null;
+  };
   return (
     <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
       <Center>
         <Stack w="100%">
-          <Textarea label="Note" {...form.getInputProps("note")} />
+          <Textarea label="Note" {...form.getInputProps("note")} autosize />
           <DateInput label="Date" {...form.getInputProps("date")} />
 
           <MultiSelect
@@ -102,6 +148,28 @@ const FormNotes = ({ note }) => {
             {...form.getInputProps("lifeAspect")}
           />
           <ListPeople form={form} />
+          {/* <MultiSelect
+            label="Tags"
+            placeholder="Select or create tags"
+            data={tags?.map(tag => ({ value: tag._id, label: tag.name })) || []}
+            {...form.getInputProps("tags")}
+            searchable
+            creatable
+            getCreateLabel={(query) => `+ Create ${query}`}
+            onCreate={handleCreateTag}
+          />  */}
+          <TagsInput
+            label="Tags"
+            placeholder="Select or create tags"
+            data={
+              tags?.map((tag) => ({ value: tag._id, label: tag.name })) || []
+            }
+            {...form.getInputProps("tags")}
+            searchable
+            creatable
+            getCreateLabel={(query) => `+ Create ${query}`}
+            onCreate={handleCreateTag}
+          />
           <Center>
             <EmojiRating
               value={form.values.rating}
